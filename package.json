@@ -37,17 +37,17 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "ajv": "^5.1.5",
+    "ajv": "^6.0.0",
     "bluebird": "^3.5.0",
     "intravenous": "^0.1.4-beta",
     "locale": "^0.1.0",
     "lodash": "^4.17.4",
-    "nconf": "^0.8.4",
+    "nconf": "^0.10.0",
     "node-uuid": "^1.4.8",
     "winston": "^2.3.1"
   },
   "devDependencies": {
-    "eslint": "^3.19.0",
+    "eslint": "^4.15.0",
     "istanbul": "^0.4.5",
     "jasmine": "^2.6.0",
     "jasmine-core": "^2.6.3",
