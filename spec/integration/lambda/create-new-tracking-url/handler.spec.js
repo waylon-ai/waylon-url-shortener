@@ -1,6 +1,6 @@
 'use strict';
 
-const Handler = require('../../../../src/lambda/say-hello/handler.js');
+const Handler = require('../../../../src/lambda/create-new-tracking-url/handler.js');
 
 describe('Lambda/sayHello [Integration]', function () {
     let context,
