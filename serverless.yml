@@ -1,6 +1,4 @@
-# For full config options, check the docs:
-#    docs.serverless.com
-service: your-service-name-v1 # NOTE: update this with your service name
+service: waylon-url-shortener
 
 provider:
   name: aws
@@ -57,18 +55,18 @@ custom:
     identitySource: method.request.header.Authorization
 
 functions:
-  sayHello:
-    handler: src/lambda/say-hello/handler.handler
+  createNewTrackingUrl:
+    handler: src/lambda/create-new-tracking-url/handler.handler
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
     events:
       - http:
-          path: say/hello
-          method: get
+          path: tracking/url
+          method: post
 #     Comment this line if you don't need Neosperience authentication:
-          authorizer: ${self:custom.authorizer}
+#          authorizer: ${self:custom.authorizer}
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic
@@ -96,6 +94,7 @@ functions:
 
 resources:
   Resources:
+    
     BasePathMapping:
       Type: "AWS::ApiGateway::BasePathMapping"
       Properties:
