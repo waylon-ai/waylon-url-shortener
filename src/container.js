@@ -19,8 +19,8 @@ function Container () {
     container.register('dynamodb.config', config.dynamodb);
 
     // Tracking URL configuration
-    container.register('lambda-mapper', require('./tracking-url/lambda-mapper'));
-    container.register('logic', require('./tracking-url/logic.js'));
+    container.register('tracking.lambda-mapper', require('./tracking-url/lambda-mapper'));
+    container.register('tracking.logic', require('./tracking-url/logic.js'));
     return container;
 }
 

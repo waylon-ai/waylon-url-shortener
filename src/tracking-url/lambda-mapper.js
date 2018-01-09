@@ -29,6 +29,6 @@ const LambdaMapper = function (logger, logic, lambdaEvent) {
 
 };
 
-LambdaMapper.$inject = ['logger', 'logic', 'lambda-event'];
+LambdaMapper.$inject = ['logger', 'tracking.logic', 'lambda-event'];
 
 module.exports = LambdaMapper;
