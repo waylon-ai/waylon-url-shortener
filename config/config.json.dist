@@ -15,6 +15,12 @@
         "level": "${CONFIG_LOGGER_FILE_OPTIONS_LEVEL}",
         "timestamp": true
       }
+    },
+    "dynamodb": {
+        "region": "CONFIG_DYNAMODB_REGION",
+        "identityTable": "CONFIG_DYNAMODB_IDENTITY_TABLE",
+        "trackingUrlTable": "${CONFIG_TRACKING_URL_TABLE_NAME}",
+        "trackerIndex": "${CONFIG_TRACKERS_INDEX_NAME}"
     }
   }
 }
