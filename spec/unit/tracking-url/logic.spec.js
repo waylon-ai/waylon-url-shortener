@@ -1,9 +1,9 @@
 'use strict';
 
-const helper = require('../helper');
+const helper = require('../../helper');
 
 describe('Logic.js', () => {
-    const Logic = require('../../src/tracking-url/logic');
+    const Logic = require('../../../src/tracking-url/logic');
     let sut;
 
     beforeEach(() => {
