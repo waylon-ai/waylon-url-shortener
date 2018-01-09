@@ -1,3 +1,4 @@
+#export SERVERLESS_STAGE=dev; export SERVERLESS_REGION=us-east-1; export SERVERLESS_CUSTOM_DOMAIN_NAME_BASE_DOMAIN_NAME=t.waylon-ai.com; sls deploy
 service: waylon-url-shortener
 
 provider:
@@ -5,27 +6,24 @@ provider:
   runtime: nodejs6.10
   stage: ${env:SERVERLESS_STAGE}
   region: ${env:SERVERLESS_REGION}
-  versionFunctions: false
+  versionFunctions: false  
 
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:*"
+      Resource:
+        Fn::Join:
+          - ""
+          - - "arn:aws:dynamodb:"
+            - "${self:provider.region}"
+            - ":"
+            - "Ref" : "AWS::AccountId"
+            - ":"
+            - "table/"
+            - "Ref" : "TrackingUrlTable"
 
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
+
 
 package:
   exclude:
@@ -47,59 +45,58 @@ package:
     - config/schema.json
     - config/config.js
 
-custom:
-  accountId: ${env:SERVERLESS_ACCOUNT_ID}
-  authorizer:
-    arn: arn:aws:lambda:${self:provider.region}:${self:custom.accountId}:function:nsp-identity-services-v1-${self:provider.stage}-custom-authorizer
-    resultTtlInSeconds: 300
-    identitySource: method.request.header.Authorization
-
 functions:
   createNewTrackingUrl:
     handler: src/lambda/create-new-tracking-url/handler.handler
-
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
     events:
       - http:
           path: tracking/url
           method: post
-#     Comment this line if you don't need Neosperience authentication:
-#          authorizer: ${self:custom.authorizer}
-#      - s3: ${env:BUCKET}
-#      - schedule: rate(10 minutes)
-#      - sns: greeter-topic
-#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
-#      - alexaSkill
-#      - iot:
-#          sql: "SELECT * FROM 'some_topic'"
-#      - cloudwatchEvent:
-#          event:
-#            source:
-#              - "aws.ec2"
-#            detail-type:
-#              - "EC2 Instance State-change Notification"
-#            detail:
-#              state:
-#                - pending
-#      - cloudwatchLog: '/aws/lambda/hello'
-#      - cognitoUserPool:
-#          pool: MyUserPool
-#          trigger: PreSignUp
-
-#    Define function environment variables here
-#    environment:
-#      variable2: value2
 
 resources:
   Resources:
-    
-    BasePathMapping:
-      Type: "AWS::ApiGateway::BasePathMapping"
+    TrackingUrlTable:
+      Type: "AWS::DynamoDB::Table"
       Properties:
-        BasePath: v1
-        DomainName: ${env:SERVERLESS_CUSTOM_DOMAIN_NAME_BASE_DOMAIN_NAME}
-        RestApiId:
-          Ref: ApiGatewayRestApi
-        Stage: ${self:provider.stage}
+        TableName: TrackingUrls
+        AttributeDefinitions:
+          - AttributeName: URL
+            AttributeType: S
+          - AttributeName: tracker
+            AttributeType: S
+        KeySchema:
+          - AttributeName: URL
+            KeyType: HASH
+          - AttributeName: tracker
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 2
+          WriteCapacityUnits: 2
+        GlobalSecondaryIndexes:
+          - IndexName: TrackerIndex
+            KeySchema:
+              - AttributeName: tracker
+                KeyType: HASH
+            Projection:
+              NonKeyAttributes:
+                - URL
+                - tracker
+                - accessed
+                - lastUpdated
+              ProjectionType: INCLUDE
+            ProvisionedThroughput:
+              ReadCapacityUnits: 2
+              WriteCapacityUnits: 2          
+        Tags: 
+          - Key: Owner
+            Value: Waylon
+          - Key: Type
+            Value: Marketing
+#    BasePathMapping:
+#      Type: "AWS::ApiGateway::BasePathMapping"
+#      Properties:
+#        BasePath: v1
+#        DomainName: ${env:SERVERLESS_CUSTOM_DOMAIN_NAME_BASE_DOMAIN_NAME}
+#        RestApiId:
+#          Ref: ApiGatewayRestApi
+#        Stage: ${self:provider.stage}
