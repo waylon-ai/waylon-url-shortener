@@ -19,13 +19,29 @@ function getDynamoDB (config) {
 }
 
 function DynamoDBClient (logger, config, dynamoDB) {
-
     dynamoDB = dynamoDB || getDynamoDB(config);
+
+    this.batchWrite = function (params) {
+        logger.verbose('DynamoDBClient/batchWrite', { params: params });
+        return Promise.try(function () {
+            return dynamoDB
+                .batchWrite(params)
+                .promise()
+                .then(function (result) {
+                    return result;
+                })
+                .catch(function (dbErr) {
+                    throw toNspError(dbErr);
+                });
+        });
+    };
 
     this.put = function (params) {
         logger.verbose('DynamoDBClient/put', { params: params });
         return Promise.try(function () {
-            return dynamoDB.put(params).promise()
+            return dynamoDB
+                .put(params)
+                .promise()
                 .then(function (result) {
                     return result;
                 })
@@ -38,7 +54,9 @@ function DynamoDBClient (logger, config, dynamoDB) {
     this.get = function (params) {
         logger.verbose('DynamoDBClient/get', { params: params });
         return Promise.try(function () {
-            return dynamoDB.get(params).promise()
+            return dynamoDB
+                .get(params)
+                .promise()
                 .then(function (result) {
                     return result.Item ? result.Item : null;
                 })
@@ -51,7 +69,9 @@ function DynamoDBClient (logger, config, dynamoDB) {
     this.delete = function (params) {
         logger.verbose('DynamoDBClient/delete', { params: params });
         return Promise.try(function () {
-            return dynamoDB.delete(params).promise()
+            return dynamoDB
+                .delete(params)
+                .promise()
                 .then(function (result) {
                     return result;
                 })
@@ -64,7 +84,9 @@ function DynamoDBClient (logger, config, dynamoDB) {
     this.query = function (params) {
         logger.verbose('DynamoDBClient/query', { params: params });
         return Promise.try(function () {
-            return dynamoDB.query(params).promise()
+            return dynamoDB
+                .query(params)
+                .promise()
                 .then(function (result) {
                     return result.Items;
                 })
@@ -77,7 +99,9 @@ function DynamoDBClient (logger, config, dynamoDB) {
     this.scan = function (params) {
         logger.verbose('DynamoDBClient/scan', { params: params });
         return Promise.try(function () {
-            return dynamoDB.scan(params).promise()
+            return dynamoDB
+                .scan(params)
+                .promise()
                 .then(function (result) {
                     return result.Items;
                 })
@@ -86,7 +110,6 @@ function DynamoDBClient (logger, config, dynamoDB) {
                 });
         });
     };
-
 }
 
 DynamoDBClient.$inject = ['logger', 'dynamodb.config', 'dynamoDB?'];
