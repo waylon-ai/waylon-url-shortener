@@ -3,7 +3,7 @@
 const helper = require('../helper');
 
 describe('Logic.js', () => {
-    const Logic = require('../../src/logic');
+    const Logic = require('../../src/tracking-url/logic');
     let sut;
 
     beforeEach(() => {

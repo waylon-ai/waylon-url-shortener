@@ -50,7 +50,7 @@ package:
 
 functions:
   createNewTrackingUrl:
-    handler: src/lambda/create-new-tracking-url/handler.handler
+    handler: src/tracking-url/lambda/create/handler.handler
     events:
       - http:
           path: tracking/url

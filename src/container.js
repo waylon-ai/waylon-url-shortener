@@ -18,10 +18,9 @@ function Container () {
     container.register('dynamodb-object-mapper', require('./dynamodb-object-mapper.js'), 'singleton');
     container.register('dynamodb.config', config.dynamodb);
 
-
-
-    container.register('lambda-mapper', require('./lambda-mapper'));
-    container.register('logic', require('./logic.js'));
+    // Tracking URL configuration
+    container.register('lambda-mapper', require('./tracking-url/lambda-mapper'));
+    container.register('logic', require('./tracking-url/logic.js'));
     return container;
 }
 
