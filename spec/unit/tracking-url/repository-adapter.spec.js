@@ -22,7 +22,7 @@ describe('TrackingUrl RepositoryAdapter', function () {
             spyOn(objectMapper, 'entity2item').and.returnValue('item');
             spyOn(repository, 'createTrackingUrl').and.returnValue(Promise.resolve());
             return sut.createTrackingUrl(trackingObj).then(function () {
-                expect(objectMapper.entity2item).toHaveBeenCalledWith(trackingObj);                
+                expect(objectMapper.entity2item).toHaveBeenCalledWith(trackingObj);
                 expect(repository.createTrackingUrl).toHaveBeenCalledWith('item');
             });
         });
