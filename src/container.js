@@ -14,6 +14,12 @@ function Container () {
     container.register('logger.config', config.logger);
     container.register('lambda-event', require('./lambda-event'));
 
+    container.register('dynamodb-client', require('./dynamodb-client.js'), 'singleton');
+    container.register('dynamodb-object-mapper', require('./dynamodb-object-mapper.js'), 'singleton');
+    container.register('dynamodb.config', config.dynamodb);
+
+
+
     container.register('lambda-mapper', require('./lambda-mapper'));
     container.register('logic', require('./logic.js'));
     return container;
