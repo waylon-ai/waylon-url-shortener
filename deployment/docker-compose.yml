@@ -1,0 +1,11 @@
+version: '2'
+services:
+    dynamodb:
+        image: peopleperhour/dynamodb
+    node:
+        image: looptribe/docker-node:4.3
+        links:
+            - dynamodb
+        volumes:
+            - ../:/data
+        stdin_open: true
