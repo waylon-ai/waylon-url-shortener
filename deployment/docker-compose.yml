@@ -3,7 +3,7 @@ services:
     dynamodb:
         image: peopleperhour/dynamodb
     node:
-        image: looptribe/docker-node:4.3
+        image: node:6.10
         links:
             - dynamodb
         volumes:
