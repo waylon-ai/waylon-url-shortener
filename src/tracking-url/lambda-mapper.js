@@ -1,6 +1,7 @@
 'use strict';
 
 const Promise = require('bluebird');
+const principal = { organizationId: 'waylon' };
 
 const createTrackingObjSchema = require('../../resources/json-schemas/createTracking.json');
 
@@ -14,7 +15,7 @@ const LambdaMapper = function (logger, logic, lambdaEvent) {
         logger.verbose('LambdaMapper/createTRackingUrl');
         return Promise.try(function () {
             const trackingObj = lambdaEvent.extractResourceFromEvent(event, createTrackingObjSchema);
-            return logic.createTrackingUrl(trackingObj);
+            return logic.createTrackingUrl(principal, trackingObj);
         })
             .then(function (result) {
                 return lambdaEvent.buildSuccessResponseEvent(event, result);

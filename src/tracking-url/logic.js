@@ -25,6 +25,6 @@ function Logic (logger, repositoryAdapter) {
     };
 }
 
-Logic.$inject = ['logger', 'identity.repository-adapter'];
+Logic.$inject = ['logger', 'tracking.repository-adapter'];
 
 module.exports = Logic;
