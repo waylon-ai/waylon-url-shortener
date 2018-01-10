@@ -17,4 +17,9 @@
       }
     }
   }
+  "dynamodb": {
+      "region": "CONFIG_DYNAMODB_REGION",
+      "trackingUrlTable": "${CONFIG_TRACKING_URL_TABLE_NAME}",
+      "trackerIndex": "${CONFIG_TRACKERS_INDEX_NAME}"
+  }
 }

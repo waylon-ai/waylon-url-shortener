@@ -14,8 +14,16 @@ function Container () {
     container.register('logger.config', config.logger);
     container.register('lambda-event', require('./lambda-event'));
 
-    container.register('lambda-mapper', require('./lambda-mapper'));
-    container.register('logic', require('./logic.js'));
+    container.register('dynamodb-client', require('./dynamodb-client.js'), 'singleton');
+    container.register('dynamodb-object-mapper', require('./dynamodb-object-mapper.js'), 'singleton');
+    container.register('dynamodb.config', config.dynamodb);
+
+    // Tracking URL configuration
+    container.register('tracking.lambda-mapper', require('./tracking-url/lambda-mapper'));
+    container.register('tracking.logic', require('./tracking-url/logic.js'));
+    container.register('tracking.repository-adapter', require('./tracking-url/repository-adapter'));
+    container.register('tracking.repository', require('./tracking-url/repository'));
+
     return container;
 }
 

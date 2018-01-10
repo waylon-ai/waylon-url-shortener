@@ -3,15 +3,13 @@
 var Config = require('../config/config.js');
 
 module.exports.getLoggerMock = function () {
-    var noop = function () {
-    };
     return {
-        silly: noop,
-        debug: noop,
-        verbose: noop,
-        info: noop,
-        warn: noop,
-        error: noop
+        silly: console.log,
+        debug: console.log,
+        verbose: console.log,
+        info: console.log,
+        warn: console.log,
+        error: console.log
     };
 };
 

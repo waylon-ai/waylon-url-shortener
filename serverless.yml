@@ -1,6 +1,19 @@
 #export SERVERLESS_STAGE=dev; export SERVERLESS_REGION=us-east-1; export SERVERLESS_CUSTOM_DOMAIN_NAME_BASE_DOMAIN_NAME=t.waylon-ai.com; sls deploy
 service: waylon-url-shortener
 
+custom:
+  cfTableArn:
+    Fn::Join:
+      - ""
+      - - "arn:aws:dynamodb:"
+        - "${self:provider.region}"
+        - ":"
+        - "Ref" : "AWS::AccountId"
+        - ":"
+        - "table/"
+        - "Ref" : "TrackingUrlTable"
+
+
 provider:
   name: aws
   runtime: nodejs6.10
@@ -12,17 +25,7 @@ provider:
     - Effect: "Allow"
       Action:
         - "dynamodb:*"
-      Resource:
-        Fn::Join:
-          - ""
-          - - "arn:aws:dynamodb:"
-            - "${self:provider.region}"
-            - ":"
-            - "Ref" : "AWS::AccountId"
-            - ":"
-            - "table/"
-            - "Ref" : "TrackingUrlTable"
-
+      Resource: ${self:custom.cfTableArn}
 
 
 package:
@@ -47,7 +50,7 @@ package:
 
 functions:
   createNewTrackingUrl:
-    handler: src/lambda/create-new-tracking-url/handler.handler
+    handler: src/tracking-url/lambda/create/handler.handler
     events:
       - http:
           path: tracking/url
@@ -100,3 +103,11 @@ resources:
 #        RestApiId:
 #          Ref: ApiGatewayRestApi
 #        Stage: ${self:provider.stage}
+  Outputs:
+    TrackingUrlTableName:
+      Description: Name of the DynamoDB table to hold trackers
+      Value: 
+        Ref: TrackingUrlTable
+    TrackingUrlTableArn:
+      Description: Arn of the DynamoDB table to hold trackers
+      Value: ${self:custom.cfTableArn}
