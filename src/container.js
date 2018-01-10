@@ -21,6 +21,9 @@ function Container () {
     // Tracking URL configuration
     container.register('tracking.lambda-mapper', require('./tracking-url/lambda-mapper'));
     container.register('tracking.logic', require('./tracking-url/logic.js'));
+    container.register('tracking.repository-adapter', require('./tracking-url/repository-adapter'));
+    container.register('tracking.repository', require('./tracking-url/repository'));
+
     return container;
 }
 

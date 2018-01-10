@@ -34,7 +34,7 @@ describe('TrackingUrl Repository', function () {
                 PutRequest: {
                     Item: {
                         URL: trackingObj.uuid,
-                        tracker: trackingObj.trackers[0].uuid,
+                        tracker: trackingObj.trackers[0].trackerId,
                         email: trackingObj.trackers[0].target,
                         created: undefined,
                         lastModified: undefined

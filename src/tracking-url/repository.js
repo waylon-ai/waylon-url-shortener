@@ -13,7 +13,7 @@ function Repository (logger, config, db) {
                 PutRequest: {
                     Item: {
                         URL: trackingUrlObj.uuid,
-                        tracker: tracker.uuid,
+                        tracker: tracker.trackerId,
                         email: tracker.target,
                         created: trackingUrlObj.created,
                         lastModified: trackingUrlObj.lastModified
