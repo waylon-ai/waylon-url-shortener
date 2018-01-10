@@ -1,10 +1,8 @@
 'use strict';
 
-const Handler = require('../../../../src/lambda/create-new-tracking-url/handler.js');
-
-describe('Lambda/sayHello [Integration]', function () {
-    let context,
-        sut;
+const Handler = require('../../../../src/tracking-url/lambda/create/handler');
+describe('Lambda/createTrackingUrl [Integration]', function () {
+    let context, sut;
 
     beforeEach(function () {
         context = {};
@@ -13,7 +11,6 @@ describe('Lambda/sayHello [Integration]', function () {
 
     describe('Handler()', function () {
         xit('should return 401 for a missing principal', function () {
-
             var event = {
                 body: null,
                 httpMethod: 'GET',
@@ -32,16 +29,26 @@ describe('Lambda/sayHello [Integration]', function () {
             });
         });
 
-        it('should return 200 with a message', function () {
-            var event = {
-                body: null,
-                httpMethod: 'GET',
+        xit('should return 200 with a message', function () {
+            const trackingObj = {
+                uuid: 'www.waylon-ai.com',
+                trackers: [
+                    {
+                        email: 'test@anemail.com'
+                    }
+                ]
+            };
+
+            const event = {
+                body: JSON.stringify(trackingObj),
+                httpMethod: 'POST',
                 headers: {
                     'X-Forwarded-Proto': 'http',
                     'X-Forwarded-Port': '80',
+                    'Content-Type': 'application/json',
                     Host: 'localhost'
                 },
-                path: '/say/hello',
+                path: '/tracking/url',
                 pathParameters: {},
                 requestContext: {
                     authorizer: {
