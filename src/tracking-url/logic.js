@@ -1,30 +1,7 @@
 'use strict';
 
-var _ = require('lodash'),
-    NspError = require('../nsp-error.js'),
-    Promise = require('bluebird');
+var Promise = require('bluebird');
 
-function checkExistence (entity, uuid) {
-    if (_.isNull(entity)) {
-        throw new NspError(NspError.codes.IDENTITY_NOT_FOUND, 'Identity "' + uuid + '" not found');
-    }
-}
-
-function checkReadOnlyAttributes (oldEntity, newEntity, attributes) {
-    var errors = [];
-    attributes.forEach(function (attribute) {
-        if (!_.isEqual(oldEntity[attribute], newEntity[attribute])) {
-            errors.push('Cannot change read-only property: ' + attribute);
-        }
-    });
-    if (errors.length > 0) {
-        throw new NspError(NspError.codes.IDENTITY_UNPROCESSABLE, 'Cannot change read-only properties', errors);
-    }
-}
-
-function checkUpdate (oldEntity, newEntity) {
-    checkReadOnlyAttributes(oldEntity, newEntity, ['uuid', 'organizationId', 'created', 'lastModified']);
-}
 
 function Logic (logger, repositoryAdapter) {
     this.ME = 'me';
@@ -43,7 +20,6 @@ function Logic (logger, repositoryAdapter) {
             });
             return repositoryAdapter.createTrackingUrl(trackingObj);
         }).then(function () {
-            console.log(trackingObj)
             return trackingObj;
         });
     };
